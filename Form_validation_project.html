@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+</head>
+
+<body>
+    <!--Form CSS Section-->
+    <style>
+        body {
+            background-color: #e6f0fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .nameError,
+        .emailError,
+        .passwordError {
+            color: red;
+            display: none;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        button:disabled {
+            background-color: grey;
+            color: white;
+            cursor: not-allowed;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button:enabled {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .Container-Table {
+            background-color: white;
+            border: 2px solid #004080;
+            border-radius: 10px;
+            margin: auto;
+            margin-top: 60px;
+            padding: 30px 40px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .Container-Table td {
+            padding: 10px;
+        }
+
+        h1 {
+            color: #004080;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        input {
+            padding: 6px;
+            border: 1px solid #888;
+            border-radius: 5px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+
+    <h1>Form Validation</h1>
+    <!--Form HTML Section-->
+    <form class="Container" id="form">
+        <table class="Container-Table">
+            <tr>
+                <td><label>Name</label></td>
+                <td>
+                    <input type="text" placeholder="Name" id="name">
+                    <span class="nameError">Name field cannot be empty</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Email</label></td>
+                <td>
+                    <input type="email" placeholder="Email" id="email">
+                    <span class="emailError">Email should be a valid email address</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Password</label></td>
+                <td>
+                    <input type="password" placeholder="Password" id="password">
+                    <span class="passwordError">Password must be at least 6 characters</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    <button type="submit" id="submit" disabled>Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <!--Form Script Section-->
+    <script>
+        const submit = document.getElementById("submit");
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+
+        const nameError = document.querySelector(".nameError");
+        const emailError = document.querySelector(".emailError");
+        const passwordError = document.querySelector(".passwordError");
+
+        const nameRegex = /^[a-zA-Z]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function validateForm() {
+            let validate = true;
+
+            // Name validation
+            if (!nameRegex.test(name.value.trim())) {
+                nameError.style.display = "inline";
+                validate = false;
+            } else {
+                nameError.style.display = "none";
+            }
+
+            // Email validation
+            if (!emailRegex.test(email.value.trim())) {
+                emailError.style.display = "inline";
+                validate = false;
+            } else {
+                emailError.style.display = "none";
+            }
+
+            // Password validation
+            if (password.value.length < 6) {
+                passwordError.style.display = "inline";
+                validate = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            submit.disabled = !validate;
+            return validate;
+        }
+
+        // Real-time validation
+        name.addEventListener("input", validateForm);
+        email.addEventListener("input", validateForm);
+        password.addEventListener("input", validateForm);
+
+        // On form submit
+        document.getElementById("form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (validateForm()) {
+                alert("Form Submitted Successfully!");
+                document.getElementById("form").reset(); // reset form
+                validateForm(); // disable submit again
+            }
+        });
+    </script>
+</body>
+
+</html>
